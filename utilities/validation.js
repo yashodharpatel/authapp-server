@@ -1,9 +1,10 @@
+import throwError from "#utilities/throwError";
+
 const validateEmail = (email, res) => {
   const regEx = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
 
   if (!regEx.test(email)) {
-    res.status(400);
-    throw new Error("Please enter a valid email address");
+    throwError(res, 400, "Please enter a valid email address");
   }
 };
 

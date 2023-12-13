@@ -1,7 +1,8 @@
+import throwError from "#utilities/throwError";
+
 const checkMandatory = (field, fieldName, res) => {
   if (!field) {
-    res.status(400);
-    throw new Error(`${fieldName} cannot be blank`);
+    throwError(res, 400, `${fieldName} cannot be blank`);
   }
 };
 

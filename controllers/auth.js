@@ -1,10 +1,11 @@
 import asyncHandler from "express-async-handler";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import User from "#models/user";
 import checkMandatory from "#utilities/checkMandatory";
 import validation from "#utilities/validation";
 import userExists from "#utilities/userExists";
-import User from "#models/user";
+import throwError from "#utilities/throwError";
 
 const register = asyncHandler(async (req, res) => {
   const { username, email, password, role } = req.body;
@@ -20,8 +21,7 @@ const register = asyncHandler(async (req, res) => {
 
   // check if the user already exists
   if (await userExists.register(email, username)) {
-    res.status(400);
-    throw new Error("User already exists");
+    throwError(res, 400, "User already exists");
   }
 
   // hash the password
@@ -43,8 +43,7 @@ const register = asyncHandler(async (req, res) => {
       email: newUser.email,
     });
   } else {
-    res.status(400);
-    throw new Error("User data is not valid");
+    throwError(res, 400, "User data is not valid");
   }
 });
 
@@ -58,15 +57,13 @@ const login = asyncHandler(async (req, res) => {
   // check if user exists
   const user = await userExists.login(value);
   if (user === -1) {
-    res.status(400);
-    throw new Error("User does not exists");
+    throwError(res, 404, "User does not exists");
   }
 
   // check if password is correct
   const validPassword = await bcrypt.compare(password, user.password);
   if (!validPassword) {
-    res.status(400);
-    throw new Error("Invalid Password");
+    throwError(res, 400, "Invalid Password");
   }
 
   // create token

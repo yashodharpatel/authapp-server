@@ -1,5 +1,6 @@
 import jwt from "jsonwebtoken";
 import asyncHandler from "express-async-handler";
+import throwError from "#utilities/throwError";
 
 const authenticateToken = asyncHandler(async (req, res, next) => {
   let token;
@@ -9,16 +10,14 @@ const authenticateToken = asyncHandler(async (req, res, next) => {
     token = authHeader.split(" ")[1];
     jwt.verify(token, process.env.TOKEN_SECRET, (err, decoded) => {
       if (err) {
-        res.status(401);
-        throw new Error("User is not authorized");
+        throwError(res, 401, "User is not authorized");
       }
 
       req.user = decoded;
       next();
     });
   } else {
-    res.status(400);
-    throw new Error("Kindly Login");
+    throwError(res, 400, "Kindly Login");
   }
 });
 
