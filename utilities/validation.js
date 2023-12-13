@@ -8,4 +8,12 @@ const validateEmail = (email, res) => {
   }
 };
 
-export default { validateEmail };
+const validatePassword = (password, res) => {
+  const regEx = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/gm;
+
+  if (!regEx.test(password)) {
+    throwError(res, 400, "Password is not strong enough");
+  }
+};
+
+export default { validateEmail, validatePassword };

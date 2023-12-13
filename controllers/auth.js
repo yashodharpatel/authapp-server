@@ -19,6 +19,9 @@ const register = asyncHandler(async (req, res) => {
   // validate the email
   validation.validateEmail(email, res);
 
+  // validate the password
+  validation.validatePassword(password, res);
+
   // check if the user already exists
   if (await userExists.register(email, username)) {
     throwError(res, 400, "User already exists");
@@ -41,6 +44,7 @@ const register = asyncHandler(async (req, res) => {
       id: newUser.id,
       username: newUser.username,
       email: newUser.email,
+      role: newUser.role
     });
   } else {
     throwError(res, 400, "User data is not valid");
