@@ -10,6 +10,7 @@
     "#models/*": "./models/*.js",
     "#controllers/*": "./controllers/*.js",
     "#services/*": "./services/*.js",
+    "#utilities/*": "./utilities/*.js",
     "#middleware/*": "./middleware/*.js",
     "#config/*": "./config/*.js",
     "#constants": "./constants.js"
