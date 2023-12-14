@@ -148,7 +148,7 @@ const sendMail = asyncHandler(async ({ email, emailType, userID }) => {
                               <tr>
                                 <td
                                   style="padding: 0 0 16px 0; font-size: 14px; line-height: 150%; font-weight: 400; color: #000000; letter-spacing: 0.01em;">
-                                  To get started, verify your Email:
+                                  To get started, verify your email:
                                 </td>
                               </tr>
                               <tr>
@@ -168,7 +168,7 @@ const sendMail = asyncHandler(async ({ email, emailType, userID }) => {
                               <tr>
                                 <td
                                   style="font-size: 14px; line-height: 170%; font-weight: 400; color: #000000; letter-spacing: 0.01em;">
-                                  Best regards, <br><strong>${constants.COMPANY_NAME}</strong>
+                                  Best Regards, <br><strong>${constants.COMPANY_NAME}</strong>
                                 </td>
                               </tr>
                             </tbody>
@@ -307,7 +307,7 @@ const sendMail = asyncHandler(async ({ email, emailType, userID }) => {
                               <tr>
                                 <td
                                   style="padding: 0 0 10px 0; font-size: 14px; line-height: 150%; font-weight: 400; color: #000000; letter-spacing: 0.01em;">
-                                  The password reset link is only valid for the next 24 hours.
+                                  The password reset link is only valid for the next 12 hours.
                                 </td>
                               </tr>
                               <tr>
@@ -325,7 +325,7 @@ const sendMail = asyncHandler(async ({ email, emailType, userID }) => {
                               <tr>
                                 <td
                                   style="font-size: 14px; line-height: 170%; font-weight: 400; color: #000000; letter-spacing: 0.01em;">
-                                  Best regards, <br><strong>${constants.COMPANY_NAME}</strong>
+                                  Best Regards, <br><strong>${constants.COMPANY_NAME}</strong>
                                 </td>
                               </tr>
                             </tbody>

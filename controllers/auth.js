@@ -121,8 +121,68 @@ const verifyEmail = asyncHandler(async (req, res) => {
   res.status(200).json({ message: "Email verified successfully" });
 });
 
+const forgotPassword = asyncHandler(async (req, res) => {
+  const { email } = req.body;
+
+  checkMandatory(email, "Email", res);
+
+  // validate the email
+  validation.validateEmail(email, res);
+
+  // check if user exists
+  const user = await userExists.login(email);
+  if (user === -1) {
+    throwError(res, 404, "User does not exists");
+  }
+
+  // send email
+  try {
+    await sendMail({
+      email,
+      emailType: constants.EmailTypes.RESET,
+      userID: user.id,
+    });
+
+    res.status(200).json({ message: `Mail sent successfully to ${email}` });
+  } catch (e) {
+    console.log(e);
+  }
+});
+
+const resetPassword = asyncHandler(async (req, res) => {
+  const { token, password } = req.body;
+
+  // check for mandatory fields
+  checkMandatory(token, "Token", res);
+  checkMandatory(password, "Password", res);
+
+  // validate the password
+  validation.validatePassword(password, res);
+
+  const user = await User.findOne({
+    forgotPasswordToken: token,
+    forgotPasswordTokenExpiry: { $gt: Date.now() },
+  });
+
+  if (!user) {
+    throwError(res, 400, "Invalid Token");
+  }
+
+  const hashedPassword = await bcrypt.hash(password, 10);
+
+  user.password = hashedPassword;
+  user.forgotPasswordToken = undefined;
+  user.forgotPasswordTokenExpiry = undefined;
+
+  await user.save();
+
+  res.status(200).json({ message: "Password reset successfully" });
+});
+
 export default {
   register,
   login,
   verifyEmail,
+  forgotPassword,
+  resetPassword,
 };
