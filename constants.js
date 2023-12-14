@@ -1,4 +1,4 @@
-const constants = {
+const StatusCodes = {
   VALIDATION_ERROR: 400,
   UNAUTHORIZED: 401,
   FORBIDDEN: 403,
@@ -6,4 +6,11 @@ const constants = {
   SERVER_ERROR: 500,
 };
 
-export default constants;
+const EmailTypes = {
+  VERIFY: "verify_email",
+  RESET: "reset_password",
+};
+
+const COMPANY_NAME = "Coding Peer";
+
+export default { StatusCodes, EmailTypes, COMPANY_NAME };

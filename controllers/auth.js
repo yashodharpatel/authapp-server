@@ -2,10 +2,12 @@ import asyncHandler from "express-async-handler";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import User from "#models/user";
+import sendMail from "#services/mailer";
 import checkMandatory from "#utilities/checkMandatory";
 import validation from "#utilities/validation";
 import userExists from "#utilities/userExists";
 import throwError from "#utilities/throwError";
+import constants from "#constants";
 
 const register = asyncHandler(async (req, res) => {
   const { username, email, password, role } = req.body;
@@ -38,13 +40,24 @@ const register = asyncHandler(async (req, res) => {
     role,
   });
 
+  // send verification email
+  try {
+    await sendMail({
+      email,
+      emailType: constants.EmailTypes.VERIFY,
+      userID: newUser.id,
+    });
+  } catch (e) {
+    console.log(e);
+  }
+
   if (newUser) {
     res.status(201).json({
       message: "User created",
       id: newUser.id,
       username: newUser.username,
       email: newUser.email,
-      role: newUser.role
+      role: newUser.role,
     });
   } else {
     throwError(res, 400, "User data is not valid");
@@ -79,7 +92,7 @@ const login = asyncHandler(async (req, res) => {
       role: user.role,
     },
     process.env.TOKEN_SECRET,
-    { expiresIn: "30m" }
+    { expiresIn: process.env.TOKEN_EXPIRY }
   );
 
   res.status(200).json({ token });
