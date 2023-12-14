@@ -98,7 +98,31 @@ const login = asyncHandler(async (req, res) => {
   res.status(200).json({ token });
 });
 
+const verifyEmail = asyncHandler(async (req, res) => {
+  const { token } = req.body;
+
+  checkMandatory(token, "Token", res);
+
+  const user = await User.findOne({
+    verifyToken: token,
+    verifyTokenExpiry: { $gt: Date.now() },
+  });
+
+  if (!user) {
+    throwError(res, 400, "Invalid Token");
+  }
+
+  user.isVerified = true;
+  user.verifyToken = undefined;
+  user.verifyTokenExpiry = undefined;
+
+  await user.save();
+
+  res.status(200).json({ message: "Email verified successfully" });
+});
+
 export default {
   register,
   login,
+  verifyEmail,
 };

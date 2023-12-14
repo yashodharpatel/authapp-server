@@ -11,12 +11,12 @@ const sendMail = asyncHandler(async ({ email, emailType, userID }) => {
   if (emailType === constants.EmailTypes.VERIFY) {
     await User.findByIdAndUpdate(userID, {
       verifyToken: hashedToken,
-      verifyTokenExpiry: new Date() + 43200000,
+      verifyTokenExpiry: Date.now() + 43200000,
     });
   } else if (emailType === constants.EmailTypes.RESET) {
     await User.findByIdAndUpdate(userID, {
       forgotPasswordToken: hashedToken,
-      forgotPasswordTokenExpiry: new Date() + 43200000,
+      forgotPasswordTokenExpiry: Date.now() + 43200000,
     });
   }
 
