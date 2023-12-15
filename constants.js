@@ -11,6 +11,6 @@ const EmailTypes = {
   RESET: "reset_password",
 };
 
-const COMPANY_NAME = "Coding Peer";
+const COMPANY_NAME = "XYZ";
 
 export default { StatusCodes, EmailTypes, COMPANY_NAME };

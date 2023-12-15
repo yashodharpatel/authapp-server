@@ -1,6 +1,7 @@
 import asyncHandler from "express-async-handler";
 import bcrypt from "bcrypt";
 import User from "#models/user";
+import ActiveToken from "#models/activetoken";
 import userExists from "#utilities/userExists";
 import throwError from "#utilities/throwError";
 import checkMandatory from "#utilities/checkMandatory";
@@ -62,7 +63,7 @@ const changePassword = asyncHandler(async (req, res) => {
 });
 
 const deleteUser = asyncHandler(async (req, res) => {
-  const { role } = req.user;
+  const { role, id } = req.user;
 
   // check if current user is admin
   if (role !== "admin") {
@@ -75,6 +76,15 @@ const deleteUser = asyncHandler(async (req, res) => {
     throwError(res, 400, "User does not exists");
   }
 
+  const token = await ActiveToken.findOne({
+    user_id: id,
+  });
+  
+  if (!token) {
+    throwError(res, 400, "Kindly Login");
+  }
+
+  await ActiveToken.deleteOne(token);
   await User.deleteOne({ username: req.params.username });
   res.status(200).json({ message: "User deleted successfully" });
 });

@@ -2,6 +2,7 @@ import asyncHandler from "express-async-handler";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import User from "#models/user";
+import ActiveToken from "#models/activetoken";
 import sendMail from "#services/mailer";
 import checkMandatory from "#utilities/checkMandatory";
 import validation from "#utilities/validation";
@@ -95,6 +96,19 @@ const login = asyncHandler(async (req, res) => {
     { expiresIn: process.env.TOKEN_EXPIRY }
   );
 
+  await ActiveToken.findOneAndUpdate(
+    { user_id: user._id },
+    { token, user_id: user._id },
+    { upsert: true }
+  );
+
+  // await ActiveToken.findOneAndUpdate({ username }, { token }, { upsert: true });
+
+  // await ActiveToken.create({
+  //   token,
+  //   user_id: user._id,
+  // });
+
   res.status(200).json({ token });
 });
 
@@ -179,10 +193,27 @@ const resetPassword = asyncHandler(async (req, res) => {
   res.status(200).json({ message: "Password reset successfully" });
 });
 
+const logout = asyncHandler(async (req, res) => {
+  const { id } = req.user;
+
+  const token = await ActiveToken.findOne({
+    user_id: id,
+  });
+
+  if (!token) {
+    throwError(res, 400, "Kindly Login");
+  }
+
+  await ActiveToken.deleteOne(token);
+
+  res.status(204).json({ message: "Logged Out" });
+});
+
 export default {
   register,
   login,
   verifyEmail,
   forgotPassword,
   resetPassword,
+  logout,
 };

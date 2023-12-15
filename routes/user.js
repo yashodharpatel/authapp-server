@@ -1,10 +1,13 @@
 import express from "express";
 import userController from "#controllers/user";
 import authenticateToken from "#middleware/authenticateToken";
+import emailVerified from "#middleware/emailVerified";
 
 const router = express.Router();
 
-router.use(authenticateToken); // will be used for all routes
+router.use(authenticateToken);
+router.use(emailVerified);
+
 router.get("/user-profile", userController.getCurrentUser);
 router.get("/get-users", userController.getAllUsers);
 // router.put("/update-user", userController.updateUser);
