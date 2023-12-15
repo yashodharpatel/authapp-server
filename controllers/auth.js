@@ -108,13 +108,6 @@ const login = asyncHandler(async (req, res) => {
     { upsert: true }
   );
 
-  // await ActiveToken.findOneAndUpdate({ username }, { token }, { upsert: true });
-
-  // await ActiveToken.create({
-  //   token,
-  //   user_id: user._id,
-  // });
-
   res.status(200).json({ token });
 });
 
