@@ -10,6 +10,9 @@ import userExists from "#utilities/userExists";
 import throwError from "#utilities/throwError";
 import constants from "#constants";
 
+// @desc Register new user
+// @route POST /auth/register
+// @access PUBLIC
 const register = asyncHandler(async (req, res) => {
   const { username, email, password, role } = req.body;
 
@@ -65,6 +68,9 @@ const register = asyncHandler(async (req, res) => {
   }
 });
 
+// @desc Login
+// @route POST /auth/login
+// @access PUBLIC
 const login = asyncHandler(async (req, res) => {
   const { value, password } = req.body;
 
@@ -112,6 +118,9 @@ const login = asyncHandler(async (req, res) => {
   res.status(200).json({ token });
 });
 
+// @desc Verify the email of new user
+// @route POST /auth/verify-email
+// @access PUBLIC
 const verifyEmail = asyncHandler(async (req, res) => {
   const { token } = req.body;
 
@@ -135,6 +144,9 @@ const verifyEmail = asyncHandler(async (req, res) => {
   res.status(200).json({ message: "Email verified successfully" });
 });
 
+// @desc Send mail to reset the password
+// @route POST /auth/forgot-password
+// @access PUBLIC
 const forgotPassword = asyncHandler(async (req, res) => {
   const { email } = req.body;
 
@@ -163,6 +175,9 @@ const forgotPassword = asyncHandler(async (req, res) => {
   }
 });
 
+// @desc Reset the password from the mail
+// @route POST /auth/reset-password
+// @access PUBLIC
 const resetPassword = asyncHandler(async (req, res) => {
   const { token, password } = req.body;
 
@@ -193,6 +208,9 @@ const resetPassword = asyncHandler(async (req, res) => {
   res.status(200).json({ message: "Password reset successfully" });
 });
 
+// @desc Logout
+// @route POST /auth/logout
+// @access PRIVATE
 const logout = asyncHandler(async (req, res) => {
   const { id } = req.user;
 

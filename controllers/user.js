@@ -7,12 +7,18 @@ import throwError from "#utilities/throwError";
 import checkMandatory from "#utilities/checkMandatory";
 import validation from "#utilities/validation";
 
+// @desc Get current user
+// @route GET /user/user-profile
+// @access PRIVATE
 const getCurrentUser = asyncHandler(async (req, res) => {
   const { email } = req.user;
   const user = await User.findOne({ email }).select("-password");
   res.status(200).json(user);
 });
 
+// @desc Get all users
+// @route GET /user/get-users
+// @access PRIVATE
 const getAllUsers = asyncHandler(async (req, res) => {
   const { email, role } = req.user;
 
@@ -25,6 +31,83 @@ const getAllUsers = asyncHandler(async (req, res) => {
   res.status(200).json(users);
 });
 
+// @desc Update the user information
+// @route PUT /user/update-user/:username
+// @access PRIVATE
+const updateUser = asyncHandler(async (req, res) => {
+  const { email } = req.body;
+  const { role, id } = req.user;
+
+  // check if user exists
+  const user = await userExists.login(req.params.username);
+  if (user === -1) {
+    throwError(res, 400, "User does not exists");
+  }
+
+  // check for mandatory fields
+  checkMandatory(email, "Email", res);
+
+  // validate the email
+  validation.validateEmail(email, res);
+
+  // code to be run while updating the email
+  const userWithSameEmail = await User.findOne({
+    email: email,
+    username: {
+      $ne: req.params.username,
+    },
+  });
+
+  if (userWithSameEmail) {
+    throwError(res, 400, "Email Id already taken");
+  }
+
+  // Only admin or the user itself can update the user
+  if (role !== "admin" && user.id !== id) {
+    throwError(res, 401, "You are not authorized to update this user");
+  }
+
+  user.email = email;
+
+  await user.save();
+
+  res.status(200).json({ message: "User details updated successfully" });
+});
+
+// @desc Change the role of user (only admin can perform this operation)
+// @route PUT /user/change-role/:username
+// @access PRIVATE
+const changeRole = asyncHandler(async (req, res) => {
+  const { role } = req.body;
+
+  // check if user exists
+  const user = await userExists.login(req.params.username);
+  if (user === -1) {
+    throwError(res, 400, "User does not exists");
+  }
+
+  // check for mandatory fields
+  checkMandatory(role, "Role", res);
+
+  // Only admin can change the role
+  if (req.user.role !== "admin") {
+    throwError(res, 403, "You are not authorized to change the role");
+  }
+
+  user.role = role;
+
+  await user.save();
+
+  res
+    .status(200)
+    .json({
+      message: `User ${req.params.username} role changed to ${role} successfully`,
+    });
+});
+
+// @desc Change the password
+// @route PUT /user/change-password
+// @access PRIVATE
 const changePassword = asyncHandler(async (req, res) => {
   const { oldPassword, newPassword } = req.body;
   const { email } = req.user;
@@ -62,13 +145,11 @@ const changePassword = asyncHandler(async (req, res) => {
   res.status(200).json({ message: "Password updated successfully" });
 });
 
+// @desc Delete the user
+// @route DEL /user/delete-user/:username
+// @access PRIVATE
 const deleteUser = asyncHandler(async (req, res) => {
   const { role, id } = req.user;
-
-  // check if current user is admin
-  if (role !== "admin") {
-    throwError(res, 403, "Only admin can delete the user");
-  }
 
   // check if user exists
   const user = await userExists.login(req.params.username);
@@ -76,10 +157,15 @@ const deleteUser = asyncHandler(async (req, res) => {
     throwError(res, 400, "User does not exists");
   }
 
+  // check if current user is admin
+  if (role !== "admin") {
+    throwError(res, 403, "Only admin can delete the user");
+  }
+
   const token = await ActiveToken.findOne({
     user_id: id,
   });
-  
+
   if (!token) {
     throwError(res, 400, "Kindly Login");
   }
@@ -92,6 +178,8 @@ const deleteUser = asyncHandler(async (req, res) => {
 export default {
   getCurrentUser,
   getAllUsers,
+  updateUser,
+  changeRole,
   changePassword,
   deleteUser,
 };

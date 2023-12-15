@@ -10,7 +10,8 @@ router.use(emailVerified);
 
 router.get("/user-profile", userController.getCurrentUser);
 router.get("/get-users", userController.getAllUsers);
-// router.put("/update-user", userController.updateUser);
+router.put("/update-user/:username", userController.updateUser);
+router.put("/change-role/:username", userController.changeRole)
 router.put("/change-password", userController.changePassword);
 router.delete("/delete-user/:username", userController.deleteUser);
 
