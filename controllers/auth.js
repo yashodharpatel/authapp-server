@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken";
 import User from "#models/user";
 import ActiveToken from "#models/activetoken";
 import sendMail from "#services/mailer";
+import uploadOnCloudinary from "#services/cloudinary";
 import checkMandatory from "#utilities/checkMandatory";
 import validation from "#utilities/validation";
 import userExists from "#utilities/userExists";
@@ -28,6 +29,16 @@ const register = asyncHandler(async (req, res) => {
   // validate the password
   validation.validatePassword(password, res);
 
+  // work with files
+  let profileLocalPath;
+  try {
+    profileLocalPath = req?.files?.profile[0]?.path;
+  } catch (error) {
+    throwError(res, 400, "Profile cannot be blank");
+  }
+
+  const profile = await uploadOnCloudinary(profileLocalPath);
+
   // check if the user already exists
   if (await userExists.register(email, username)) {
     throwError(res, 400, "User already exists");
@@ -40,6 +51,7 @@ const register = asyncHandler(async (req, res) => {
   const newUser = await User.create({
     username,
     email,
+    profile: profile.url,
     password: hashedPassword,
     role,
   });

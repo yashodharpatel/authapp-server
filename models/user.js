@@ -12,6 +12,10 @@ const userSchema = mongoose.Schema(
       required: [true, "Please provide a email"],
       unique: true,
     },
+    profile: {
+      type: String, // cloudinary url
+      required: true,
+    },
     password: {
       type: String,
       required: [true, "Please provide a password"],

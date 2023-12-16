@@ -98,11 +98,9 @@ const changeRole = asyncHandler(async (req, res) => {
 
   await user.save();
 
-  res
-    .status(200)
-    .json({
-      message: `User ${req.params.username} role changed to ${role} successfully`,
-    });
+  res.status(200).json({
+    message: `User ${req.params.username} role changed to ${role} successfully`,
+  });
 });
 
 // @desc Change the password
