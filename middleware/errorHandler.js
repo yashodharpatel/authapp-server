@@ -40,7 +40,11 @@ const errorHandler = (err, req, res, next) => {
       });
       break;
     default:
-      console.log("No Error, All good !");
+      res.status(500).json({
+        title: "Internal Server Error",
+        message: err.message,
+        stackTrace: err.stack,
+      });
       break;
   }
 };

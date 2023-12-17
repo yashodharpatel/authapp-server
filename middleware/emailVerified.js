@@ -7,7 +7,7 @@ const emailVerified = asyncHandler(async (req, res, next) => {
   const user = await User.findOne({ username: req.user.username });
 
   if (!user) {
-    throwError(res, 401, "User not found");
+    throwError(res, 401, "User does not exists");
   }
 
   if (!user.isVerified) {

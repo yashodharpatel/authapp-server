@@ -2,7 +2,7 @@ import asyncHandler from "express-async-handler";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import User from "#models/user";
-import ActiveToken from "#models/activetoken";
+import { redisClient } from "#config/redisConnection";
 import sendMail from "#services/mailer";
 import uploadOnCloudinary from "#services/cloudinary";
 import checkMandatory from "#utilities/checkMandatory";
@@ -114,12 +114,6 @@ const login = asyncHandler(async (req, res) => {
     { expiresIn: process.env.TOKEN_EXPIRY }
   );
 
-  await ActiveToken.findOneAndUpdate(
-    { user_id: user._id },
-    { token, user_id: user._id },
-    { upsert: true }
-  );
-
   res.status(200).json({ token });
 });
 
@@ -217,19 +211,14 @@ const resetPassword = asyncHandler(async (req, res) => {
 // @route POST /auth/logout
 // @access PRIVATE
 const logout = asyncHandler(async (req, res) => {
-  const { id } = req.user;
+  const { token, user } = req;
+  const tokenExp = user.exp;
 
-  const token = await ActiveToken.findOne({
-    user_id: id,
-  });
+  const token_key = `bl_${token}`;
+  await redisClient.set(token_key, token);
+  redisClient.expireAt(token_key, tokenExp);
 
-  if (!token) {
-    throwError(res, 400, "Kindly Login");
-  }
-
-  await ActiveToken.deleteOne(token);
-
-  res.status(204).json({ message: "Logged Out" });
+  res.status(200).json({ message: "Logged Out" });
 });
 
 export default {

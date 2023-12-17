@@ -1,7 +1,7 @@
 import asyncHandler from "express-async-handler";
 import bcrypt from "bcrypt";
 import User from "#models/user";
-import ActiveToken from "#models/activetoken";
+import { redisClient } from "#config/redisConnection";
 import userExists from "#utilities/userExists";
 import throwError from "#utilities/throwError";
 import checkMandatory from "#utilities/checkMandatory";
@@ -147,7 +147,9 @@ const changePassword = asyncHandler(async (req, res) => {
 // @route DEL /user/delete-user/:username
 // @access PRIVATE
 const deleteUser = asyncHandler(async (req, res) => {
-  const { role, id } = req.user;
+  const { token } = req;
+  const { role } = req.user;
+  const tokenExp = req.user.exp;
 
   // check if user exists
   const user = await userExists.login(req.params.username);
@@ -160,15 +162,10 @@ const deleteUser = asyncHandler(async (req, res) => {
     throwError(res, 403, "Only admin can delete the user");
   }
 
-  const token = await ActiveToken.findOne({
-    user_id: id,
-  });
+  const token_key = `bl_${token}`;
+  await redisClient.set(token_key, token);
+  redisClient.expireAt(token_key, tokenExp);
 
-  if (!token) {
-    throwError(res, 400, "Kindly Login");
-  }
-
-  await ActiveToken.deleteOne(token);
   await User.deleteOne({ username: req.params.username });
   res.status(200).json({ message: "User deleted successfully" });
 });

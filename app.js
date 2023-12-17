@@ -9,8 +9,10 @@ import userRouter from "#routes/user";
 import errorHandler from "#middleware/errorHandler";
 
 import connectDB from "#config/dbConnection";
+import { connectRedis } from "#config/redisConnection";
 
 connectDB();
+connectRedis();
 
 dotenv.config();
 const app = express();
