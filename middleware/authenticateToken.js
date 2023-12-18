@@ -34,6 +34,7 @@ const authenticateToken = asyncHandler(async (req, res, next) => {
     }
 
     req.user = decodedUser;
+    req.user.role = user.role;
     req.token = token;
     next();
   } else {

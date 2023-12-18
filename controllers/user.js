@@ -90,7 +90,7 @@ const changeRole = asyncHandler(async (req, res) => {
   checkMandatory(role, "Role", res);
 
   // Only admin can change the role
-  if (req.user.role !== "admin") {
+  if (req.user.role !== "admin" || user.username === req.user.username) {
     throwError(res, 403, "You are not authorized to change the role");
   }
 
