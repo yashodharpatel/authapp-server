@@ -29,6 +29,11 @@ const register = asyncHandler(async (req, res) => {
   // validate the password
   validation.validatePassword(password, res);
 
+  // check if the user already exists
+  if (await userExists.register(email, username)) {
+    throwError(res, 400, "User already exists");
+  }
+
   // work with files
   let profileLocalPath;
   try {
@@ -38,11 +43,6 @@ const register = asyncHandler(async (req, res) => {
   }
 
   const profile = await uploadOnCloudinary(profileLocalPath);
-
-  // check if the user already exists
-  if (await userExists.register(email, username)) {
-    throwError(res, 400, "User already exists");
-  }
 
   // hash the password
   const hashedPassword = await bcrypt.hash(password, 10);

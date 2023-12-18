@@ -12,7 +12,7 @@ class ApiResponse {
     title && (this.title = title);
     message && (this.message = message);
     data && (this.data = data);
-    stackTrace && (this.stackTrace = this.stackTrace);
+    stackTrace && (this.stackTrace = stackTrace);
     this.success = statusCode < 400;
   }
 }
