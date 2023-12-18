@@ -1,0 +1,408 @@
+{
+	"info": {
+		"_postman_id": "a55d6a6f-b7a0-40f1-a233-820ae67a1675",
+		"name": "auth-app",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "19537751"
+	},
+	"item": [
+		{
+			"name": "Register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "fullname",
+							"value": "Yashodhar Patel",
+							"type": "text"
+						},
+						{
+							"key": "username",
+							"value": "yash",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "patelyashodhar012@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "Yash@1234",
+							"type": "text"
+						},
+						{
+							"key": "role",
+							"value": "admin",
+							"type": "text"
+						},
+						{
+							"key": "profile",
+							"type": "file",
+							"src": "/Users/yashodhar.patel/Downloads/image.jpg"
+						}
+					],
+					"options": {
+						"formdata": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{SERVER_URL}}/auth/register",
+					"host": [
+						"{{SERVER_URL}}"
+					],
+					"path": [
+						"auth",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"value\": \"yash\",\n    \"password\": \"Yash@1234\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{SERVER_URL}}/auth/login",
+					"host": [
+						"{{SERVER_URL}}"
+					],
+					"path": [
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User profile",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1ODAxYjEwNmU3MzcwMDE2MTdkN2E0MyIsInVzZXJuYW1lIjoieWFzaCIsImVtYWlsIjoieWFzaEBnbWFpbC5jb20iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3MDI4OTQzOTMsImV4cCI6MTcwMjg5NTI5M30.SdQqSFldEwOC5zB0slTGeDbD16VsvZ2CUkSRd5wp724",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{SERVER_URL}}/user/user-profile",
+					"host": [
+						"{{SERVER_URL}}"
+					],
+					"path": [
+						"user",
+						"user-profile"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Users",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1ODAxYjEwNmU3MzcwMDE2MTdkN2E0MyIsInVzZXJuYW1lIjoieWFzaCIsImVtYWlsIjoieWFzaEBnbWFpbC5jb20iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3MDI4OTQzOTMsImV4cCI6MTcwMjg5NTI5M30.SdQqSFldEwOC5zB0slTGeDbD16VsvZ2CUkSRd5wp724",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{SERVER_URL}}/user/get-users",
+					"host": [
+						"{{SERVER_URL}}"
+					],
+					"path": [
+						"user",
+						"get-users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete User",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1ODAxNTk5NThjODFhNzQ0NzA1YTAxMCIsInVzZXJuYW1lIjoieWFzaCIsImVtYWlsIjoicHJlcm5hQGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTcwMjg5MzM4MiwiZXhwIjoxNzAyODk0MjgyfQ.WFFKR1m_NgMU_k-lcSnSR_9ab9KmwjJZQRPQekNltCA",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{SERVER_URL}}/user/delete-user/yash",
+					"host": [
+						"{{SERVER_URL}}"
+					],
+					"path": [
+						"user",
+						"delete-user",
+						"yash"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Verify Email",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"token\": \"$2b$10$CKwZYtnkA/.JZnoB6jPqz.wbfDRcQPvGij208jX2wtd1Nvw2VPWla\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{SERVER_URL}}/auth/verify-email",
+					"host": [
+						"{{SERVER_URL}}"
+					],
+					"path": [
+						"auth",
+						"verify-email"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Forgot Password",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"prerna@gmail.com\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{SERVER_URL}}/auth/forgot-password",
+					"host": [
+						"{{SERVER_URL}}"
+					],
+					"path": [
+						"auth",
+						"forgot-password"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Reset Password",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"token\": \"$2b$10$HicCXc91Vi3sIKrM20izHOqNEgrZrVGw5gcefiPVOijdZcz5zNQIO\",\n    \"password\": \"Yash@4321\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{SERVER_URL}}/auth/reset-password",
+					"host": [
+						"{{SERVER_URL}}"
+					],
+					"path": [
+						"auth",
+						"reset-password"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Change Password",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1ODAxN2Y0ZmQ0YzVmODVhNDdhZmRkZiIsInVzZXJuYW1lIjoieWFzaCIsImVtYWlsIjoieWFzaEBnbWFpbC5jb20iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3MDI4OTM1ODAsImV4cCI6MTcwMjg5NDQ4MH0.nUiWzsN62280JQjRSyynYvdtyyKB6Ho4OnF1xHF0d50",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"oldPassword\": \"Yash@1234\",\n    \"newPassword\": \"Yash@4321\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{SERVER_URL}}/user/change-password",
+					"host": [
+						"{{SERVER_URL}}"
+					],
+					"path": [
+						"user",
+						"change-password"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Logout",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1ODAxYjEwNmU3MzcwMDE2MTdkN2E0MyIsInVzZXJuYW1lIjoieWFzaCIsImVtYWlsIjoieWFzaEBnbWFpbC5jb20iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3MDI4OTQzOTMsImV4cCI6MTcwMjg5NTI5M30.SdQqSFldEwOC5zB0slTGeDbD16VsvZ2CUkSRd5wp724",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{SERVER_URL}}/auth/logout",
+					"host": [
+						"{{SERVER_URL}}"
+					],
+					"path": [
+						"auth",
+						"logout"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update User",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1ODAxYjEwNmU3MzcwMDE2MTdkN2E0MyIsInVzZXJuYW1lIjoieWFzaCIsImVtYWlsIjoieWFzaEBnbWFpbC5jb20iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3MDI4OTQzOTMsImV4cCI6MTcwMjg5NTI5M30.SdQqSFldEwOC5zB0slTGeDbD16VsvZ2CUkSRd5wp724",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"fullname\": \"Yashodhar Patel\",\n    \"email\": \"yashpatel@gmail.com\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{SERVER_URL}}/user/update-user/yash",
+					"host": [
+						"{{SERVER_URL}}"
+					],
+					"path": [
+						"user",
+						"update-user",
+						"yash"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Change Role",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1ODAxNTk5NThjODFhNzQ0NzA1YTAxMCIsInVzZXJuYW1lIjoieWFzaCIsImVtYWlsIjoieWFzaEBnbWFpbC5jb20iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3MDI4OTI5OTQsImV4cCI6MTcwMjg5Mzg5NH0.7zC4gHtkiJFlGKAVwBTsLngfnHseVue87rmyAChhkPA",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"role\": \"guest\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{SERVER_URL}}/user/change-role/mohan",
+					"host": [
+						"{{SERVER_URL}}"
+					],
+					"path": [
+						"user",
+						"change-role",
+						"mohan"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
