@@ -6,14 +6,17 @@ import userExists from "#utilities/userExists";
 import throwError from "#utilities/throwError";
 import checkMandatory from "#utilities/checkMandatory";
 import validation from "#utilities/validation";
+import ApiResponse from "#utilities/apiResponse";
 
 // @desc Get current user
 // @route GET /user/user-profile
 // @access PRIVATE
 const getCurrentUser = asyncHandler(async (req, res) => {
   const { email } = req.user;
-  const user = await User.findOne({ email }).select("-password");
-  res.status(200).json(user);
+  const user = await User.findOne({ email }).select(
+    "-password -verifyToken -verifyTokenExpiry"
+  );
+  res.status(200).json(ApiResponse.success(200, null, user));
 });
 
 // @desc Get all users
@@ -28,7 +31,7 @@ const getAllUsers = asyncHandler(async (req, res) => {
   }
 
   const users = await User.find({ email: { $ne: email } }).select("-password");
-  res.status(200).json(users);
+  res.status(200).json(ApiResponse.success(200, null, users));
 });
 
 // @desc Update the user information
@@ -71,7 +74,9 @@ const updateUser = asyncHandler(async (req, res) => {
 
   await user.save();
 
-  res.status(200).json({ message: "User details updated successfully" });
+  res
+    .status(200)
+    .json(ApiResponse.success(200, "User details updated successfully", null));
 });
 
 // @desc Change the role of user (only admin can perform this operation)
@@ -101,6 +106,16 @@ const changeRole = asyncHandler(async (req, res) => {
   res.status(200).json({
     message: `User ${req.params.username} role changed to ${role} successfully`,
   });
+
+  res
+    .status(200)
+    .json(
+      ApiResponse.success(
+        200,
+        `User ${req.params.username} role changed to ${role} successfully`,
+        null
+      )
+    );
 });
 
 // @desc Change the password
@@ -140,7 +155,9 @@ const changePassword = asyncHandler(async (req, res) => {
   user.password = hashedPassword;
   await user.save();
 
-  res.status(200).json({ message: "Password updated successfully" });
+  res
+    .status(200)
+    .json(ApiResponse.success(200, "Password updated successfully", null));
 });
 
 // @desc Delete the user
@@ -167,7 +184,9 @@ const deleteUser = asyncHandler(async (req, res) => {
   redisClient.expireAt(token_key, tokenExp);
 
   await User.deleteOne({ username: req.params.username });
-  res.status(200).json({ message: "User deleted successfully" });
+  res
+    .status(200)
+    .json(ApiResponse.success(200, "User deleted successfully", null));
 });
 
 export default {

@@ -9,6 +9,7 @@ import checkMandatory from "#utilities/checkMandatory";
 import validation from "#utilities/validation";
 import userExists from "#utilities/userExists";
 import throwError from "#utilities/throwError";
+import ApiResponse from "#utilities/apiResponse";
 import constants from "#constants";
 
 // @desc Register new user
@@ -67,16 +68,16 @@ const register = asyncHandler(async (req, res) => {
     console.log(e);
   }
 
-  if (newUser) {
-    res.status(201).json({
-      message: "User created",
-      id: newUser.id,
-      username: newUser.username,
-      email: newUser.email,
-      role: newUser.role,
-    });
+  const createdUser = await User.findById(newUser._id).select(
+    "-password -verifyToken -verifyTokenExpiry"
+  );
+
+  if (createdUser) {
+    res
+      .status(201)
+      .json(ApiResponse.success(200, "User created successfully", createdUser));
   } else {
-    throwError(res, 400, "User data is not valid");
+    throwError(res, 500, "Something went wrong while registering the user");
   }
 });
 
@@ -114,7 +115,9 @@ const login = asyncHandler(async (req, res) => {
     { expiresIn: process.env.TOKEN_EXPIRY }
   );
 
-  res.status(200).json({ token });
+  res
+    .status(200)
+    .json(ApiResponse.success(200, "Logged In successfully", { token }));
 });
 
 // @desc Verify the email of new user
@@ -140,7 +143,9 @@ const verifyEmail = asyncHandler(async (req, res) => {
 
   await user.save();
 
-  res.status(200).json({ message: "Email verified successfully" });
+  res
+    .status(200)
+    .json(ApiResponse.success(200, "Email verified successfully", null));
 });
 
 // @desc Send mail to reset the password
@@ -168,7 +173,11 @@ const forgotPassword = asyncHandler(async (req, res) => {
       userID: user.id,
     });
 
-    res.status(200).json({ message: `Mail sent successfully to ${email}` });
+    res
+      .status(200)
+      .json(
+        ApiResponse.success(200, `Mail sent successfully to ${email}`, null)
+      );
   } catch (e) {
     console.log(e);
   }
@@ -204,7 +213,9 @@ const resetPassword = asyncHandler(async (req, res) => {
 
   await user.save();
 
-  res.status(200).json({ message: "Password reset successfully" });
+  res
+    .status(200)
+    .json(ApiResponse.success(200, "Password reset successfully", null));
 });
 
 // @desc Logout
@@ -218,7 +229,7 @@ const logout = asyncHandler(async (req, res) => {
   await redisClient.set(token_key, token);
   redisClient.expireAt(token_key, tokenExp);
 
-  res.status(200).json({ message: "Logged Out" });
+  res.status(200).json(ApiResponse.success(200, "Logged Out", null));
 });
 
 export default {
