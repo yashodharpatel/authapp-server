@@ -16,9 +16,10 @@ import constants from "#constants";
 // @route POST /auth/register
 // @access PUBLIC
 const register = asyncHandler(async (req, res) => {
-  const { username, email, password, role } = req.body;
+  const { fullname, username, email, password, role } = req.body;
 
   // check for mandatory fields
+  checkMandatory(fullname, "Full name", res);
   checkMandatory(username, "Username", res);
   checkMandatory(email, "Email", res);
   checkMandatory(password, "Password", res);
@@ -50,6 +51,7 @@ const register = asyncHandler(async (req, res) => {
 
   // create new user
   const newUser = await User.create({
+    fullname,
     username,
     email,
     profile: profile.url,

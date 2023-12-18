@@ -30,7 +30,9 @@ const getAllUsers = asyncHandler(async (req, res) => {
     throwError(res, 403, "Only admin can access all the users");
   }
 
-  const users = await User.find({ email: { $ne: email } }).select("-password");
+  const users = await User.find({ email: { $ne: email } }).select(
+    "-password -verifyToken -verifyTokenExpiry"
+  );
   res.status(200).json(ApiResponse.success(200, null, users));
 });
 
@@ -38,7 +40,7 @@ const getAllUsers = asyncHandler(async (req, res) => {
 // @route PUT /user/update-user/:username
 // @access PRIVATE
 const updateUser = asyncHandler(async (req, res) => {
-  const { email } = req.body;
+  const { fullname, email } = req.body;
   const { role, id } = req.user;
 
   // check if user exists
@@ -48,6 +50,7 @@ const updateUser = asyncHandler(async (req, res) => {
   }
 
   // check for mandatory fields
+  checkMandatory(fullname, "Full name", res);
   checkMandatory(email, "Email", res);
 
   // validate the email
@@ -70,6 +73,7 @@ const updateUser = asyncHandler(async (req, res) => {
     throwError(res, 401, "You are not authorized to update this user");
   }
 
+  user.fullname = fullname;
   user.email = email;
 
   await user.save();
