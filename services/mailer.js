@@ -21,23 +21,23 @@ const sendMail = asyncHandler(async ({ email, emailType, userID }) => {
   }
 
   // send mail using gmail
-  // const transporter = nodemailer.createTransport({
-  //   service: "gmail",
-  //   auth: {
-  //     user: process.env.MAILSERVICE_USER,
-  //     pass: process.env.MAILSERVICE_PASS,
-  //   },
-  // });
-
-  // send mail using mailtrap
   const transporter = nodemailer.createTransport({
-    host: "sandbox.smtp.mailtrap.io",
-    port: 2525,
+    service: "gmail",
     auth: {
       user: process.env.MAILSERVICE_USER,
       pass: process.env.MAILSERVICE_PASS,
     },
   });
+
+  // send mail using mailtrap
+  // const transporter = nodemailer.createTransport({
+  //   host: "sandbox.smtp.mailtrap.io",
+  //   port: 2525,
+  //   auth: {
+  //     user: process.env.MAILSERVICE_USER,
+  //     pass: process.env.MAILSERVICE_PASS,
+  //   },
+  // });
 
   const mailOptions = {
     from: process.env.MAIL_FROM,
