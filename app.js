@@ -28,5 +28,5 @@ app.use("/user", userRouter);
 app.use(errorHandler);
 
 app.listen(PORT, () => {
-  console.log("Server successfully started on PORT", PORT);
+  console.log("Server started successfully on PORT", PORT);
 });
