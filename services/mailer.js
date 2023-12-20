@@ -125,7 +125,7 @@ const sendMail = asyncHandler(async ({ email, emailType, userID }) => {
                     <tbody>
                       <tr>
                         <td style="padding:48px 0 30px 0; text-align: center; font-size: 14px; color: #4C83EE;">
-                          ${constants.COMPANY_NAME}
+                          ${process.env.COMPANY_NAME}
                         </td>
                       </tr>
                       <tr>
@@ -141,7 +141,7 @@ const sendMail = asyncHandler(async ({ email, emailType, userID }) => {
                               <tr>
                                 <td
                                   style="padding: 0 0 10px 0; font-size: 14px; line-height: 150%; font-weight: 400; color: #000000; letter-spacing: 0.01em;">
-                                  Thanks for choosing ${constants.COMPANY_NAME}! We are happy to see
+                                  Thanks for choosing ${process.env.COMPANY_NAME}! We are happy to see
                                   you on board.
                                 </td>
                               </tr>
@@ -168,7 +168,7 @@ const sendMail = asyncHandler(async ({ email, emailType, userID }) => {
                               <tr>
                                 <td
                                   style="font-size: 14px; line-height: 170%; font-weight: 400; color: #000000; letter-spacing: 0.01em;">
-                                  Best Regards, <br><strong>${constants.COMPANY_NAME}</strong>
+                                  Best Regards, <br><strong>${process.env.COMPANY_NAME}</strong>
                                 </td>
                               </tr>
                             </tbody>
@@ -180,7 +180,7 @@ const sendMail = asyncHandler(async ({ email, emailType, userID }) => {
                           <div class="outlook-group-fix"
                             style="padding: 0 0 20px 0; vertical-align: top; display: inline-block; text-align: center; width:100%;">
                             <span
-                              style="padding: 0; font-size: 11px; line-height: 15px; font-weight: normal; color: #8B949F;">${constants.COMPANY_NAME}<br />
+                              style="padding: 0; font-size: 11px; line-height: 15px; font-weight: normal; color: #8B949F;">${process.env.COMPANY_NAME}<br />
                           </div>
                           </div>
                         </td>
@@ -270,7 +270,7 @@ const sendMail = asyncHandler(async ({ email, emailType, userID }) => {
                     <tbody>
                       <tr>
                         <td style="padding:48px 0 30px 0; text-align: center; font-size: 14px; color: #4C83EE;">
-                          ${constants.COMPANY_NAME}
+                          ${process.env.COMPANY_NAME}
                         </td>
                       </tr>
                       <tr>
@@ -325,7 +325,7 @@ const sendMail = asyncHandler(async ({ email, emailType, userID }) => {
                               <tr>
                                 <td
                                   style="font-size: 14px; line-height: 170%; font-weight: 400; color: #000000; letter-spacing: 0.01em;">
-                                  Best Regards, <br><strong>${constants.COMPANY_NAME}</strong>
+                                  Best Regards, <br><strong>${process.env.COMPANY_NAME}</strong>
                                 </td>
                               </tr>
                             </tbody>
@@ -337,7 +337,7 @@ const sendMail = asyncHandler(async ({ email, emailType, userID }) => {
                           <div class="outlook-group-fix"
                             style="padding: 0 0 20px 0; vertical-align: top; display: inline-block; text-align: center; width:100%;">
                             <span
-                              style="padding: 0; font-size: 11px; line-height: 15px; font-weight: normal; color: #8B949F;">${constants.COMPANY_NAME}<br />
+                              style="padding: 0; font-size: 11px; line-height: 15px; font-weight: normal; color: #8B949F;">${process.env.COMPANY_NAME}<br />
                           </div>
                           </div>
                         </td>
